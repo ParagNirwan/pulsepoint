@@ -1,0 +1,29 @@
+# === GLOBAL ===
+.DS_Store
+.vscode/
+.idea/
+*.iml
+*.log
+logs/
+.env
+*.key
+*.pem
+
+# === FRONTEND ===
+frontend/node_modules/
+frontend/dist/
+frontend/out-tsc/
+frontend/.angular/
+frontend/package-lock.json
+frontend/npm-debug.log
+frontend/src/environments/environment*.ts
+
+# === BACKEND ===
+backend/target/
+backend/build/
+backend/.gradle/
+backend/out/
+
+# Spring Boot sensitive configs
+backend/src/main/resources/application.properties
+backend/src/main/resources/application.yml
