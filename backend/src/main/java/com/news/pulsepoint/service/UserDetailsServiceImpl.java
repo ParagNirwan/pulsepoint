@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Optional;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
@@ -16,18 +18,20 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(usernameOrEmail);
-        if (user == null) {
-            user = userRepository.findByEmail(usernameOrEmail);
+        Optional<User> userOpt = userRepository.findByUsername(usernameOrEmail);
+
+        if (userOpt.isEmpty()) {
+            userOpt = userRepository.findByEmail(usernameOrEmail);
         }
 
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found with username or email: " + usernameOrEmail);
-        }
+        User user = userOpt.orElseThrow(() ->
+                new UsernameNotFoundException("User not found with username or email: " + usernameOrEmail)
+        );
 
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getUsername())
-                .password(user.getPassword())
+                .password(user.getPassword()) // must be BCrypt encoded
+                .authorities(new ArrayList<>()) // empty list if you don't use roles yet
                 .build();
     }
 }

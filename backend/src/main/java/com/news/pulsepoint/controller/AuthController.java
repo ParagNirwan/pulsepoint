@@ -25,13 +25,20 @@ public class AuthController {
 
     @PostMapping("/login")
     public AuthenticationResponse login(@RequestBody AuthenticationRequest request) {
-        // 1. Authenticate the user
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
-                )
-        );
+        System.out.println("Attempting login for: " + request.getEmail());
+        System.out.println("Password sent: " + request.getPassword());
+
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getEmail(),
+                            request.getPassword()
+                    )
+            );
+        } catch (Exception e) {
+            e.printStackTrace(); // or log.error("Auth failed", e);
+            throw e; // keep throwing so your frontend sees failure
+        }
 
         // 2. Load user details
         final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
