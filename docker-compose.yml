@@ -1,0 +1,56 @@
+version: "3.9"
+
+services:
+  backend:
+    build: ./backend
+    container_name: pulsepoint-backend
+    env_file:
+      - ./.env
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./backend/src:/app/src # Mount source code
+      - ./backend/pom.xml:/app/pom.xml # Mount pom.xml
+      - /app/target # Preserve compiled artifacts
+    command: mvn spring-boot:run # Run Spring Boot in dev mode
+    depends_on:
+      - mongo
+    networks:
+      - pulsepoint-net
+
+  frontend:
+    build: ./frontend
+    container_name: pulsepoint-frontend
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./frontend:/app # Mount entire frontend
+      - /app/node_modules # Preserve installed packages
+    command: npm run start # Angular dev server
+    depends_on:
+      - backend
+    networks:
+      - pulsepoint-net
+
+  mongo:
+    image: mongo:7
+    container_name: pulsepoint-mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER:-} # Default to empty if unset
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASS:-}
+      MONGO_INITDB_DATABASE: newsdb
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - pulsepoint-net
+
+volumes:
+  mongo_data:
+
+
+networks:
+  pulsepoint-net:
+    driver: bridge
