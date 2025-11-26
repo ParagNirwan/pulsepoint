@@ -1,0 +1,13 @@
+:host {
+  display: flex;
+  height: 100vh;
+}
+
+app-settings-sidebar {
+  flex: 0 0 250px;
+}
+
+.right-panel {
+  flex: 1;
+  padding: 24px;
+}

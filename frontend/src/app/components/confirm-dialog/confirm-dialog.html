@@ -1,0 +1,24 @@
+<h2 mat-dialog-title>{{ data.title }}</h2>
+
+<mat-dialog-content>
+  <p>{{ data.message }}</p>
+
+  <!-- Show password input only if required -->
+  <div *ngIf="data.requirePassword" style="margin-top: 1rem">
+    <input
+      type="password"
+      [(ngModel)]="password"
+      placeholder="Enter your password"
+      style="width: 100%; padding: 0.5rem"
+    />
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">
+    {{ data.cancelButtonText || 'No' }}
+  </button>
+  <button mat-button color="warn" (click)="onConfirm()">
+    {{ data.confirmButtonText || 'Yes' }}
+  </button>
+</mat-dialog-actions>

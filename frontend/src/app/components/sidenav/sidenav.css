@@ -1,0 +1,89 @@
+mat-sidenav-container {
+  height: 100vh;
+}
+
+/* left nav area: fixed width */
+mat-sidenav {
+  width: 240px;
+  padding: 16px;
+  background: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-sizing: border-box;
+}
+
+/* nav links */
+nav a {
+  text-decoration: none;
+  color: inherit;
+  font-size: 15px;
+  padding: 8px 0;
+  cursor: pointer;
+}
+
+/* the main content area — allow it to take remaining space */
+mat-sidenav-content {
+  overflow: auto;
+  background: #fff;
+  box-sizing: border-box;
+  min-height: 100vh;
+}
+
+/* center the inner content and cap width */
+.content {
+  padding: 24px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+/* wrapper caps width so the grid stays centered */
+.feedBodyWrapper {
+  width: 100%;
+  max-width: 1100px;
+  box-sizing: border-box;
+}
+
+/* responsive grid for news cards */
+.feedBody {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  align-items: start;
+  padding: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  /* allow grid children to shrink properly */
+  min-width: 0;
+}
+
+/* make sure each news-card and its internal mat-card can shrink and fill the cell */
+news-card,
+news-card > * {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+/* Temporary debug outlines — remove after verifying */
+mat-sidenav,
+mat-sidenav-content,
+.feedBodyWrapper,
+.feedBody,
+news-card {
+  outline: 1px dashed rgba(0, 0, 0, 0.08);
+}
+
+/* small screen tweaks */
+@media (max-width: 480px) {
+  mat-sidenav {
+    width: 200px;
+  }
+
+  .feedBody {
+    grid-template-columns: 1fr;
+  }
+}

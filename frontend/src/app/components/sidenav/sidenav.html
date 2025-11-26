@@ -1,0 +1,31 @@
+<mat-sidenav-container>
+  <mat-sidenav mode="side" opened>
+    <nav>
+      <a mat-list-item>Liked News</a>
+      <a mat-list-item>Bookmarks</a>
+      <a mat-list-item>Filter?</a>
+    </nav>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="content">
+      <div class="feedBodyWrapper">
+        <ng-container *ngIf="articles$ | async as articles; else loading">
+          <div class="feedBody" *ngIf="articles.length > 0; else empty">
+            <news-card *ngFor="let a of articles" [article]="a"></news-card>
+          </div>
+        </ng-container>
+
+        <ng-template #loading>
+          <div class="loading">
+            <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
+          </div>
+        </ng-template>
+
+        <ng-template #empty>
+          <div class="emptyState">No news found</div>
+        </ng-template>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

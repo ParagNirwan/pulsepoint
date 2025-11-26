@@ -1,0 +1,100 @@
+<div class="signup-container">
+  <mat-card class="signup-card">
+    <h2>Register</h2>
+
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+      <!-- Username -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Username</mat-label>
+        <input matInput formControlName="username" placeholder="Enter username" />
+
+        <mat-error
+          *ngIf="signupForm.controls['username'].invalid && signupForm.controls['username'].touched"
+        >
+          <ng-container *ngIf="signupForm.controls['username'].errors?.['required']">
+            Username is required
+          </ng-container>
+          <ng-container *ngIf="signupForm.controls['username'].errors?.['minlength']">
+            Minimum 3 characters
+          </ng-container>
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Email -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" placeholder="Enter email" />
+
+        <mat-error
+          *ngIf="signupForm.controls['email'].invalid && signupForm.controls['email'].touched"
+        >
+          <ng-container *ngIf="signupForm.controls['email'].errors?.['required']">
+            Email is required
+          </ng-container>
+          <ng-container *ngIf="signupForm.controls['email'].errors?.['email']">
+            Enter a valid email
+          </ng-container>
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Password -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          [type]="hidePassword ? 'password' : 'text'"
+          formControlName="password"
+          placeholder="Enter password"
+        />
+        <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
+          <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+
+        <mat-error
+          *ngIf="signupForm.controls['password'].invalid && signupForm.controls['password'].touched"
+        >
+          <ng-container *ngIf="signupForm.controls['password'].errors?.['required']">
+            Password is required
+          </ng-container>
+          <ng-container *ngIf="signupForm.controls['password'].errors?.['minlength']">
+            Minimum 6 characters
+          </ng-container>
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Re-Enter Password -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Confirm Password</mat-label>
+        <input
+          matInput
+          [type]="hideConfirmPassword ? 'password' : 'text'"
+          formControlName="confirmPassword"
+          placeholder="Confirm password"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          type="button"
+          (click)="hideConfirmPassword = !hideConfirmPassword"
+        >
+          <mat-icon>{{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+
+        <mat-error *ngIf="confirmPassword?.touched && confirmPassword?.invalid">
+          <ng-container *ngIf="confirmPassword?.errors?.['required']">
+            Confirm Password is required
+          </ng-container>
+          <ng-container *ngIf="confirmPassword?.errors?.['passwordsMismatch']">
+            Passwords do not match
+          </ng-container>
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Submit Button -->
+      <button matButton="filled" color="primary" type="submit" class="full-width">Sign Up</button>
+    </form>
+    <div class="signin-text">
+      <p>Already have an account? <a href="/login" color="primary">Sign In</a></p>
+    </div>
+  </mat-card>
+</div>

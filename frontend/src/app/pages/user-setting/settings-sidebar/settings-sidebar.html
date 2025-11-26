@@ -1,0 +1,9 @@
+<mat-nav-list>
+  <mat-list-item
+    *ngFor="let cat of categories"
+    (click)="selectCategory(cat.id)"
+    style="cursor: pointer"
+  >
+    {{ cat.label }}
+  </mat-list-item>
+</mat-nav-list>

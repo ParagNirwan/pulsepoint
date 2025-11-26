@@ -1,0 +1,16 @@
+<mat-toolbar color="primary" class="navbar">
+  <!-- Left side: Logo -->
+  <a mat-button class="logo" disabled="true">
+    <img src="/logoMainSmall.png" alt="PulsePoint Logo" width="200" />
+  </a>
+
+  <!-- Right side: Navigation group -->
+  <div class="nav-links">
+    <a mat-button routerLink="/feed">Home</a>
+    <a mat-button routerLink="/user-settings">Settings</a>
+    <a mat-button (click)="logout()">Log Out</a>
+    <!--<button mat-icon-button (click)="toggleTheme()" aria-label="Toggle theme">
+      <mat-icon>dark_mode</mat-icon>
+    </button>-->
+  </div>
+</mat-toolbar>

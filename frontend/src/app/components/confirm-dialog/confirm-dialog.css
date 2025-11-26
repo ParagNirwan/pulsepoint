@@ -1,0 +1,9 @@
+/* Optional styling */
+mat-dialog-content p {
+  margin: 0;
+  font-size: 14px;
+}
+
+mat-dialog-actions button {
+  min-width: 80px;
+}

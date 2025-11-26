@@ -1,0 +1,24 @@
+<div style="display: flex; height: 100vh">
+  <!-- Left Panel -->
+  <app-settings-sidebar (categorySelected)="onCategoryChange($event)"> </app-settings-sidebar>
+
+  <!-- Right Panel -->
+  <div style="flex: 1; padding: 24px">
+    <h2>{{ selectedCategory | titlecase }}</h2>
+    <ng-container [ngSwitch]="selectedCategory">
+      <div *ngSwitchCase="'news'">
+        <p>Here go your News Preference settings...</p>
+      </div>
+
+      <div *ngSwitchCase="'account'">
+        <button mat-flat-button style="background-color: crimson" (click)="openDeleteDialog()">
+          Delete Account
+        </button>
+      </div>
+
+      <div *ngSwitchDefault>
+        <p>Select a category from the sidebar.</p>
+      </div>
+    </ng-container>
+  </div>
+</div>
