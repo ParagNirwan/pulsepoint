@@ -15,6 +15,9 @@
           Delete Account
         </button>
       </div>
+      <div *ngSwitchCase="'privacy'">
+        <p>Here go your Privacy settings...</p>
+      </div>
 
       <div *ngSwitchDefault>
         <p>Select a category from the sidebar.</p>

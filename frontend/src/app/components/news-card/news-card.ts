@@ -30,5 +30,9 @@ export class NewsCardComponent {
       window.open(this.article.url, '_blank')
     }
   }
+
+  dislike() {
+
+  }
 }
 

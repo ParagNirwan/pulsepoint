@@ -1,12 +1,15 @@
 <mat-card class="news-card" appearance="outlined" *ngIf="article">
   <mat-card-header>
     <mat-card-title>{{ article.title }}</mat-card-title>
-    <mat-card-subtitle>Source: {{ article.source.name }}</mat-card-subtitle>
+    <mat-card-subtitle
+      >Source: {{ article.source.name }} | Date:
+      {{ article.publishedAt | date : 'mediumDate' }}</mat-card-subtitle
+    >
   </mat-card-header>
 
   <img
     mat-card-image
-    [src]="article.urlToImage || 'https://material.angular.dev/assets/img/examples/shiba2.jpg'"
+    [src]="article.urlToImage || 'https://commons.wikimedia.org/wiki/File:No_Image_Available.jpg'"
     [alt]="article.title"
   />
 
@@ -33,6 +36,10 @@
       <span class="material-icons">
         {{ saved ? 'bookmark' : 'bookmark_border' }}
       </span>
+    </button>
+
+    <button mat-button (click)="dislike()">
+      <span class="material-icons">close</span>
     </button>
   </mat-card-actions>
 </mat-card>
