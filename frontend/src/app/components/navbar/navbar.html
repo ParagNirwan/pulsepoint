@@ -1,16 +1,20 @@
 <mat-toolbar color="primary" class="navbar">
-  <!-- Left side: Logo -->
-  <a mat-button class="logo" disabled="true">
+  <a mat-button class="logo" aria-disabled="true">
     <img src="/logoMainSmall.png" alt="PulsePoint Logo" width="200" />
   </a>
 
-  <!-- Right side: Navigation group -->
+  <span style="flex: 1 1 auto"></span>
+
   <div class="nav-links">
-    <a mat-button routerLink="/feed">Home</a>
-    <a mat-button routerLink="/user-settings">Settings</a>
-    <a mat-button (click)="logout()">Log Out</a>
-    <!--<button mat-icon-button (click)="toggleTheme()" aria-label="Toggle theme">
-      <mat-icon>dark_mode</mat-icon>
-    </button>-->
+    <ng-container *ngIf="username$ | async as username; else loggedOut">
+      <a mat-button routerLink="/feed">Home</a>
+      <a mat-button routerLink="/user-settings">Settings</a>
+      <a mat-button (click)="logout()">Log Out</a>
+    </ng-container>
+
+    <ng-template #loggedOut>
+      <a mat-button routerLink="/login">Log In</a>
+      <a mat-button routerLink="/signup">Register</a>
+    </ng-template>
   </div>
 </mat-toolbar>
