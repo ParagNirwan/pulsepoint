@@ -1,5 +1,5 @@
 <mat-toolbar color="primary" class="navbar">
-  <a mat-button class="logo" aria-disabled="true">
+  <a mat-button class="logo" aria-disabled="true" href="/feed">
     <img src="/logoMainSmall.png" alt="PulsePoint Logo" width="200" />
   </a>
 
@@ -7,9 +7,9 @@
 
   <div class="nav-links">
     <ng-container *ngIf="username$ | async as username; else loggedOut">
-      <a mat-button routerLink="/feed">Home</a>
-      <a mat-button routerLink="/user-settings">Settings</a>
-      <a mat-button (click)="logout()">Log Out</a>
+      <!--<a mat-button routerLink="/feed">Home</a>-->
+      <!--<a mat-button routerLink="/user-settings">Settings</a>-->
+      <!--<a mat-button (click)="logout()">Log Out</a>-->
     </ng-container>
 
     <ng-template #loggedOut>

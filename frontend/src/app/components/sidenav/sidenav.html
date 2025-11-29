@@ -1,13 +1,55 @@
-<mat-sidenav-container>
-  <mat-sidenav mode="side" opened>
-    <nav>
-      <a mat-list-item>News Feed</a>
-      <a mat-list-item>Bookmarks</a>
-      <a mat-list-item>Liked News</a>
-    </nav>
+<mat-sidenav-container class="sidenavContainer">
+  <mat-sidenav
+    #sidenav
+    [mode]="isSmallScreen ? 'over' : 'side'"
+    [opened]="!isSmallScreen ? true : sidenavOpened"
+    class="appSidenav"
+    [class.collapsed]="collapsed"
+  >
+    <div class="sidenavHeader">
+      <button mat-icon-button (click)="toggleCollapsed()" aria-label="Toggle menu">
+        <mat-icon>{{ collapsed ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+      </button>
+
+      <span class="brand" *ngIf="!collapsed">
+        <!--<img src="/favicon.png" alt="PulsePoint Logo" width="30" />-->
+      </span>
+      <br />
+    </div>
+
+    <mat-nav-list role="navigation" aria-label="Main">
+      <a
+        mat-list-item
+        *ngFor="let item of menuItems; trackBy: trackByLabel"
+        [routerLink]="item.route"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        matTooltip="{{ item.label }}"
+        matTooltipPosition="right"
+        [matTooltipDisabled]="!collapsed"
+        (click)="onNavItemClick(item.label)"
+      >
+        <mat-icon matListIcon aria-hidden="true">{{ item.icon }}</mat-icon>
+        <span class="itemLabel" matLine *ngIf="!collapsed">&nbsp;{{ item.label }}</span>
+        <span class="spacer"></span>
+        <mat-icon *ngIf="item.badge" class="badgeIcon" aria-hidden="true"
+          >fiber_manual_record</mat-icon
+        >
+      </a>
+    </mat-nav-list>
   </mat-sidenav>
 
   <mat-sidenav-content>
+    <!--<mat-toolbar color="primary" class="topbar">
+      <button mat-icon-button (click)="openSidenav()" *ngIf="isSmallScreen" aria-label="Open menu">
+        <mat-icon>menu</mat-icon>
+      </button>
+
+      <span class="toolbarTitle">
+        <img src="/logoMainSmall.png" alt="PulsePoint Logo" width="200" />
+      </span>
+    </mat-toolbar>-->
+
     <div class="content">
       <div class="feedBodyWrapper">
         <ng-container *ngIf="articles$ | async as articles; else loading">
