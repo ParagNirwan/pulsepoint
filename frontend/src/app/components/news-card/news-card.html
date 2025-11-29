@@ -1,15 +1,21 @@
 <mat-card class="news-card" appearance="outlined" *ngIf="article">
   <mat-card-header>
     <mat-card-title>{{ article.title }}</mat-card-title>
-    <mat-card-subtitle
-      >Source: {{ article.source.name }} | Date:
-      {{ article.publishedAt | date : 'mediumDate' }}</mat-card-subtitle
-    >
+
+    <mat-card-subtitle>
+      <hr />
+      {{ article.source.name }} |
+      {{ article.publishedAt | date : 'mediumDate' }}
+      <hr
+    /></mat-card-subtitle>
   </mat-card-header>
 
   <img
     mat-card-image
-    [src]="article.urlToImage || 'https://commons.wikimedia.org/wiki/File:No_Image_Available.jpg'"
+    [src]="
+      article.urlToImage ||
+      'https://upload.wikimedia.org/wikipedia/commons/d/d1/Image_not_available.png'
+    "
     [alt]="article.title"
   />
 
@@ -39,7 +45,7 @@
     </button>
 
     <button mat-button (click)="dislike()">
-      <span class="material-icons">close</span>
+      <span class="material-icons">visibility_off</span>
     </button>
   </mat-card-actions>
 </mat-card>
