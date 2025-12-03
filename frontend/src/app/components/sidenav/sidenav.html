@@ -1,4 +1,8 @@
-<mat-sidenav-container class="sidenavContainer">
+<mat-sidenav-container
+  class="sidenavContainer"
+  [class.shrunk]="collapsed && !isSmallScreen"
+  [class.wide]="!collapsed && !isSmallScreen"
+>
   <mat-sidenav
     #sidenav
     [mode]="isSmallScreen ? 'over' : 'side'"
@@ -12,7 +16,7 @@
       </button>
 
       <span class="brand" *ngIf="!collapsed">
-        <!--<img src="/favicon.png" alt="PulsePoint Logo" width="30" />-->
+        <!-- logo / brand here -->
       </span>
       <br />
     </div>
@@ -27,7 +31,7 @@
         matTooltip="{{ item.label }}"
         matTooltipPosition="right"
         [matTooltipDisabled]="!collapsed"
-        (click)="onNavItemClick(item.label)"
+        (click)="onNavItemClick(item)"
       >
         <mat-icon matListIcon aria-hidden="true">{{ item.icon }}</mat-icon>
         <span class="itemLabel" matLine *ngIf="!collapsed">&nbsp;{{ item.label }}</span>
@@ -40,21 +44,39 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <!--<mat-toolbar color="primary" class="topbar">
-      <button mat-icon-button (click)="openSidenav()" *ngIf="isSmallScreen" aria-label="Open menu">
+    <!-- top bar with menu button visible on small screens 
+    <mat-toolbar class="topbar" role="banner">
+      <button
+        mat-icon-button
+        class="mobileMenuBtn"
+        *ngIf="isSmallScreen"
+        aria-label="Open menu"
+        (click)="openSidenav()"
+      >
         <mat-icon>menu</mat-icon>
       </button>
 
       <span class="toolbarTitle">
-        <img src="/logoMainSmall.png" alt="PulsePoint Logo" width="200" />
+        <img src="/logoMainSmall.png" alt="PulsePoint Logo" width="160" />
       </span>
-    </mat-toolbar>-->
+      <span class="toolbarSpacer"></span>
+     
+    </mat-toolbar>
+
+     floating menu button fallback for very small screens or if toolbar is hidden -->
+    <button
+      mat-fab
+      class="mobileFab"
+      *ngIf="isSmallScreen"
+      aria-label="Open navigation"
+      (click)="openSidenav()"
+      type="button"
+    >
+      <mat-icon>menu</mat-icon>
+    </button>
 
     <div class="content">
       <div class="feedBodyWrapper">
-        <!-- <app-feed></app-feed>
-        <app-bookmarks></app-bookmarks>
-        <app-liked-news></app-liked-news>-->
         <router-outlet></router-outlet>
       </div>
     </div>
