@@ -10,10 +10,13 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { NewsService, NewsArticle } from '../../services/news.service';
-import { NewsCardComponent } from '../news-card/news-card';
+
 import { Observable, of } from 'rxjs';
 import { catchError, shareReplay } from 'rxjs/operators';
 import { AuthService } from '../../auth/auth.service';
+import { Feed } from "../../pages/feed/feed";
+import { Bookmarks } from "../../pages/bookmarks/bookmarks";
+import { LikedNews } from "../../pages/liked-news/liked-news";
 
 interface MenuItem {
   label: string;
@@ -36,7 +39,6 @@ interface MenuItem {
     MatButtonModule,
     MatToolbarModule,
     MatTooltipModule,
-    NewsCardComponent
   ],
   templateUrl: './sidenav.html',
   styleUrls: ['./sidenav.css']
@@ -50,12 +52,13 @@ export class SidenavComponent {
   sidenavOpened = true;
 
   menuItems: MenuItem[] = [
-    { label: 'News Feed', icon: 'article', route: '/feed' },
-    { label: 'Bookmarks', icon: 'bookmark', route: '/bookmarks' },
-    { label: 'Liked News', icon: 'thumb_up', route: '/liked' },
-    { label: 'Settings', icon: 'settings', route: '/user-settings' },
+    { label: 'News Feed', icon: 'article', route: 'feed' },
+    { label: 'Bookmarks', icon: 'bookmark', route: 'bookmarks' },
+    { label: 'Liked News', icon: 'thumb_up', route: 'liked-news' },
+    { label: 'Settings', icon: 'settings', route: 'user-settings' },
     { label: 'Log Out', icon: 'power_settings_new', action: () => this.logout() }
   ];
+
 
   constructor(
     private newsService: NewsService,
@@ -73,7 +76,7 @@ export class SidenavComponent {
       this.isSmallScreen = result.matches;
       if (this.isSmallScreen) {
         this.sidenavOpened = false;
-        this.collapsed = false; // ensure we do not use collapsed mode on small screen
+        this.collapsed = false;
       } else {
         this.sidenavOpened = true;
       }
@@ -111,7 +114,7 @@ export class SidenavComponent {
   }
 
   logout() {
-    console.log('Logging out user from SidenavComponent');
+
     this.authService.logout();
   }
 }

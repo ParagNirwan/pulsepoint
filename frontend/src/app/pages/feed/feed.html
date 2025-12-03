@@ -1,2 +1,17 @@
-<div class="feed-header"></div>
-<app-sidenav> </app-sidenav>
+<div class="feed-header">
+  <ng-container *ngIf="articles$ | async as articles; else loading">
+    <div class="feedBody" *ngIf="articles.length > 0; else empty">
+      <news-card *ngFor="let a of articles" [article]="a"></news-card>
+    </div>
+  </ng-container>
+
+  <ng-template #loading>
+    <div class="loading">
+      <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
+    </div>
+  </ng-template>
+
+  <ng-template #empty>
+    <div class="emptyState">No news found</div>
+  </ng-template>
+</div>

@@ -52,21 +52,10 @@
 
     <div class="content">
       <div class="feedBodyWrapper">
-        <ng-container *ngIf="articles$ | async as articles; else loading">
-          <div class="feedBody" *ngIf="articles.length > 0; else empty">
-            <news-card *ngFor="let a of articles" [article]="a"></news-card>
-          </div>
-        </ng-container>
-
-        <ng-template #loading>
-          <div class="loading">
-            <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
-          </div>
-        </ng-template>
-
-        <ng-template #empty>
-          <div class="emptyState">No news found</div>
-        </ng-template>
+        <!-- <app-feed></app-feed>
+        <app-bookmarks></app-bookmarks>
+        <app-liked-news></app-liked-news>-->
+        <router-outlet></router-outlet>
       </div>
     </div>
   </mat-sidenav-content>

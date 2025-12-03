@@ -1,0 +1,189 @@
+mat-sidenav-container {
+  height: 100vh;
+}
+
+/* left nav area */
+mat-sidenav {
+  width: 240px;
+  padding: 16px;
+  background: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+/* header alignment inside sidenav */
+.sidenavHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* list items */
+.mat-nav-list .mat-list-item,
+.mat-nav-list a.mat-list-item {
+  height: 48px;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  box-sizing: border-box;
+  gap: 12px;
+}
+
+/* icon sizing */
+.mat-nav-list .mat-list-item mat-icon[matListIcon],
+.mat-nav-list a.mat-list-item mat-icon[matListIcon] {
+  width: 32px;
+  height: 32px;
+  line-height: 32px;
+  font-size: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 32px;
+}
+
+/* label styling */
+.itemLabel {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 15px;
+  line-height: 22px;
+}
+
+/* spacer pushes badge icon to right side */
+.spacer {
+  flex: 1 1 auto;
+}
+
+/* small circular badge icon */
+.badgeIcon {
+  font-size: 10px;
+  line-height: 12px;
+  margin-left: 8px;
+  color: #d32f2f;
+  flex: 0 0 auto;
+}
+
+/* collapsed mode */
+mat-sidenav.collapsed {
+  width: 50px;
+  min-width: 55px;
+  max-width: 72px;
+  padding-left: 0;
+  padding-right: 0;
+  transition: width 200ms ease;
+  overflow: visible;
+}
+
+/* hide brand, labels, and badges in collapsed */
+mat-sidenav.collapsed .brand,
+mat-sidenav.collapsed .itemLabel,
+mat-sidenav.collapsed .badgeIcon {
+  display: none;
+}
+
+/* remove list item padding in collapsed */
+mat-sidenav.collapsed .mat-nav-list .mat-list-item,
+mat-sidenav.collapsed .mat-nav-list a.mat-list-item {
+  padding-left: 0;
+  padding-right: 0;
+  height: 56px;
+  min-height: 56px;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+/* make icon container larger in collapsed state */
+mat-sidenav.collapsed .mat-nav-list .mat-list-item mat-icon[matListIcon],
+mat-sidenav.collapsed .mat-nav-list a.mat-list-item mat-icon[matListIcon] {
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  flex: 0 0 40px;
+  font-size: 20px;
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* main content area */
+mat-sidenav-content {
+  overflow: auto;
+  background: #fff;
+  box-sizing: border-box;
+  min-height: 100vh;
+}
+
+/* center the inner content and cap width */
+.content {
+  padding: 24px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+/* wrapper caps max feed width */
+.feedBodyWrapper {
+  width: 100%;
+  max-width: 1100px;
+  box-sizing: border-box;
+}
+
+/* responsive grid for news cards */
+.feedBody {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  align-items: start;
+  padding: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+/* card sizing */
+news-card,
+news-card > * {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+/* debug outlines */
+mat-sidenav,
+mat-sidenav-content,
+.feedBodyWrapper,
+.feedBody,
+news-card {
+  outline: 1px dashed rgba(0, 0, 0, 0.08);
+}
+
+/* small screen tweaks */
+@media (max-width: 480px) {
+  mat-sidenav {
+    width: 200px;
+  }
+
+  .feedBody {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* extreme narrow protection */
+@media (max-width: 360px) {
+  mat-sidenav.collapsed .mat-nav-list .mat-list-item mat-icon[matListIcon],
+  mat-sidenav.collapsed .mat-nav-list a.mat-list-item mat-icon[matListIcon] {
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+  }
+}
