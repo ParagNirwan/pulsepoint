@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
@@ -8,15 +8,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { NewsService, NewsArticle } from '../../services/news.service';
 
 import { Observable, of } from 'rxjs';
 import { catchError, shareReplay } from 'rxjs/operators';
 import { AuthService } from '../../auth/auth.service';
-import { Feed } from "../../pages/feed/feed";
-import { Bookmarks } from "../../pages/bookmarks/bookmarks";
-import { LikedNews } from "../../pages/liked-news/liked-news";
 
 interface MenuItem {
   label: string;
@@ -43,7 +40,7 @@ interface MenuItem {
   templateUrl: './sidenav.html',
   styleUrls: ['./sidenav.css']
 })
-export class SidenavComponent {
+export class SidenavComponent implements AfterViewInit {
   @ViewChild('sidenav') sidenav!: MatSidenav;
 
   articles$: Observable<NewsArticle[]>;
@@ -59,14 +56,12 @@ export class SidenavComponent {
     { label: 'Log Out', icon: 'power_settings_new', action: () => this.logout() }
   ];
 
-
   constructor(
     private newsService: NewsService,
     private breakpoint: BreakpointObserver,
-    private authService: AuthService
-
+    private authService: AuthService,
+    private router: Router
   ) {
-
     this.articles$ = this.newsService.fetchTopHeadlines('us', 10).pipe(
       catchError(() => of([])),
       shareReplay({ bufferSize: 1, refCount: true })
@@ -74,22 +69,55 @@ export class SidenavComponent {
 
     this.breakpoint.observe([Breakpoints.Handset, Breakpoints.Tablet]).subscribe(result => {
       this.isSmallScreen = result.matches;
+
       if (this.isSmallScreen) {
+        // overlay behavior on small screens; start closed
         this.sidenavOpened = false;
         this.collapsed = false;
       } else {
+        // side panel on larger screens
         this.sidenavOpened = true;
+      }
+
+      // sync the actual MatSidenav if available
+      if (this.sidenav) {
+        if (this.isSmallScreen) {
+          this.sidenav.mode = 'over';
+          this.sidenav.close();
+        } else {
+          this.sidenav.mode = 'side';
+          this.sidenav.open();
+        }
       }
     });
   }
 
-  // toggle acts differently on small screen
+  ngAfterViewInit(): void {
+    // ensure initial state after view init
+    if (this.sidenav) {
+      if (this.isSmallScreen) {
+        this.sidenav.mode = 'over';
+        this.sidenav.close();
+      } else {
+        this.sidenav.mode = 'side';
+        this.sidenav.open();
+      }
+    }
+  }
+
   toggleCollapsed(): void {
     if (this.isSmallScreen && this.sidenav) {
-      // on small screen use this button to open or close the overlay drawer
+      // on small screens toggle overlay drawer open/close
       this.sidenav.toggle();
-    } else {
-      this.collapsed = !this.collapsed;
+      return;
+    }
+
+    // for larger screens toggle the collapsed flag and keep sidenav open so content margin updates
+    this.collapsed = !this.collapsed;
+
+    if (this.sidenav && !this.isSmallScreen) {
+      this.sidenav.open();
+      setTimeout(() => { }, 0);
     }
   }
 
@@ -99,14 +127,17 @@ export class SidenavComponent {
     }
   }
 
-  // called when a nav item is clicked
-  onNavItemClick(label?: string): void {
+  onNavItemClick(item: MenuItem): void {
+    // close overlay drawer on small screens
     if (this.isSmallScreen && this.sidenav) {
       this.sidenav.close();
     }
-    if (label == "Log Out") {
-      this.logout();
+
+    // run action if present
+    if (item.action) {
+      item.action();
     }
+    // otherwise routerLink will handle navigation on anchor click
   }
 
   trackByLabel(index: number, item: MenuItem): string {
@@ -114,7 +145,7 @@ export class SidenavComponent {
   }
 
   logout() {
-
     this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }

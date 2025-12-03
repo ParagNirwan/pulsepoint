@@ -1,8 +1,12 @@
+/* sidenav css - cleaned and deduplicated */
+
+/* container and background */
 mat-sidenav-container {
   height: 100vh;
+  background: #f5f5f5;
 }
 
-/* left nav area */
+/* sidenav base */
 mat-sidenav {
   width: 240px;
   padding: 16px;
@@ -12,16 +16,20 @@ mat-sidenav {
   gap: 12px;
   box-sizing: border-box;
   overflow: visible;
+  transition: width 200ms ease-in-out;
+  box-shadow: none;
+  border-right: none;
+  background-clip: padding-box;
 }
 
-/* header alignment inside sidenav */
+/* header */
 .sidenavHeader {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-/* list items */
+/* list item base and centering */
 .mat-nav-list .mat-list-item,
 .mat-nav-list a.mat-list-item {
   height: 48px;
@@ -33,9 +41,10 @@ mat-sidenav {
   gap: 12px;
 }
 
-/* icon sizing */
+/* icon sizing and centering */
 .mat-nav-list .mat-list-item mat-icon[matListIcon],
-.mat-nav-list a.mat-list-item mat-icon[matListIcon] {
+.mat-nav-list a.mat-list-item mat-icon[matListIcon],
+.mat-nav-list mat-icon[matListIcon] {
   width: 32px;
   height: 32px;
   line-height: 32px;
@@ -46,7 +55,7 @@ mat-sidenav {
   flex: 0 0 32px;
 }
 
-/* label styling */
+/* label */
 .itemLabel {
   display: inline-block;
   white-space: nowrap;
@@ -54,14 +63,15 @@ mat-sidenav {
   text-overflow: ellipsis;
   font-size: 15px;
   line-height: 22px;
+  position: relative;
 }
 
-/* spacer pushes badge icon to right side */
+/* spacer */
 .spacer {
   flex: 1 1 auto;
 }
 
-/* small circular badge icon */
+/* badge */
 .badgeIcon {
   font-size: 10px;
   line-height: 12px;
@@ -70,25 +80,23 @@ mat-sidenav {
   flex: 0 0 auto;
 }
 
-/* collapsed mode */
+/* collapsed (desktop) */
 mat-sidenav.collapsed {
-  width: 50px;
-  min-width: 55px;
-  max-width: 72px;
+  width: 56px;
+  min-width: 56px;
   padding-left: 0;
   padding-right: 0;
-  transition: width 200ms ease;
   overflow: visible;
 }
 
-/* hide brand, labels, and badges in collapsed */
+/* hide labels and badges in collapsed */
 mat-sidenav.collapsed .brand,
 mat-sidenav.collapsed .itemLabel,
 mat-sidenav.collapsed .badgeIcon {
   display: none;
 }
 
-/* remove list item padding in collapsed */
+/* collapsed item layout */
 mat-sidenav.collapsed .mat-nav-list .mat-list-item,
 mat-sidenav.collapsed .mat-nav-list a.mat-list-item {
   padding-left: 0;
@@ -99,7 +107,7 @@ mat-sidenav.collapsed .mat-nav-list a.mat-list-item {
   box-sizing: border-box;
 }
 
-/* make icon container larger in collapsed state */
+/* larger icon in collapsed */
 mat-sidenav.collapsed .mat-nav-list .mat-list-item mat-icon[matListIcon],
 mat-sidenav.collapsed .mat-nav-list a.mat-list-item mat-icon[matListIcon] {
   width: 40px;
@@ -119,9 +127,55 @@ mat-sidenav-content {
   background: #fff;
   box-sizing: border-box;
   min-height: 100vh;
+  transition: margin-left 200ms ease-in-out;
 }
 
-/* center the inner content and cap width */
+/* content offset when sidenav is side mode */
+mat-sidenav-container.wide mat-sidenav-content,
+mat-sidenav-container.wide mat-sidenav + mat-sidenav-content {
+  margin-left: 240px !important;
+}
+
+mat-sidenav-container.shrunk mat-sidenav-content,
+mat-sidenav-container.shrunk mat-sidenav + mat-sidenav-content {
+  margin-left: 56px !important;
+}
+
+/* topbar and toolbar helpers */
+.topbar {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  box-sizing: border-box;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  background: #fff;
+  z-index: 1001;
+}
+
+.toolbarTitle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.toolbarSpacer {
+  flex: 1 1 auto;
+}
+
+/* mobile floating button */
+.mobileFab {
+  position: fixed;
+  left: 12px;
+  bottom: 16px;
+  z-index: 1002;
+}
+
+.mobileMenuBtn {
+  margin-right: 8px;
+}
+
+/* content wrapper */
 .content {
   padding: 24px;
   width: 100%;
@@ -130,14 +184,13 @@ mat-sidenav-content {
   box-sizing: border-box;
 }
 
-/* wrapper caps max feed width */
 .feedBodyWrapper {
   width: 100%;
   max-width: 1100px;
   box-sizing: border-box;
 }
 
-/* responsive grid for news cards */
+/* news grid */
 .feedBody {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -149,7 +202,6 @@ mat-sidenav-content {
   min-width: 0;
 }
 
-/* card sizing */
 news-card,
 news-card > * {
   display: block;
@@ -158,17 +210,86 @@ news-card > * {
   min-width: 0;
 }
 
-/* debug outlines */
+/* remove debug outlines */
 mat-sidenav,
 mat-sidenav-content,
 .feedBodyWrapper,
 .feedBody,
 news-card {
-  outline: 1px dashed rgba(0, 0, 0, 0.08);
+  outline: none;
 }
 
-/* small screen tweaks */
-@media (max-width: 480px) {
+/* active item styling using brand color #a12015 */
+/* expanded mode: full row highlight + left accent */
+.mat-nav-list a.mat-list-item.active {
+  background: rgba(161, 32, 21, 0.12);
+  color: #a12015;
+  border-radius: 8px;
+  position: relative;
+  font-weight: 600;
+}
+
+.mat-nav-list a.mat-list-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 6px;
+  bottom: 6px;
+  width: 4px;
+  background: #a12015;
+  border-radius: 4px;
+}
+
+/* icon and label color for active */
+.mat-nav-list a.mat-list-item.active mat-icon,
+.mat-nav-list a.mat-list-item.active .mat-line,
+.mat-nav-list a.mat-list-item.active .itemLabel {
+  color: #a12015 !important;
+}
+
+/* collapsed mode active: circular icon highlight */
+mat-sidenav.collapsed .mat-nav-list a.mat-list-item.active {
+  background: rgba(161, 32, 21, 0.18);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  margin: auto;
+  padding: 0;
+}
+
+mat-sidenav.collapsed .mat-nav-list a.mat-list-item.active mat-icon {
+  color: #a12015 !important;
+}
+
+mat-sidenav.collapsed .mat-nav-list a.mat-list-item.active::before {
+  display: none;
+}
+
+/* subtle hover */
+.mat-nav-list a.mat-list-item:hover {
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: 8px;
+}
+
+/* responsive rules */
+@media (max-width: 768px) {
+  /* overlay mode uses no left margin */
+  mat-sidenav-container.wide mat-sidenav-content,
+  mat-sidenav-container.shrunk mat-sidenav-content {
+    margin-left: 0 !important;
+  }
+
+  /* collapsed behavior on small screens keeps icons visible */
+  mat-sidenav.collapsed .mat-nav-list .mat-list-item,
+  mat-sidenav.collapsed a.mat-list-item {
+    justify-content: center;
+  }
+
+  mat-sidenav.collapsed .brand,
+  mat-sidenav.collapsed .itemLabel {
+    display: none;
+  }
+
   mat-sidenav {
     width: 200px;
   }
@@ -178,7 +299,7 @@ news-card {
   }
 }
 
-/* extreme narrow protection */
+/* tiny screens */
 @media (max-width: 360px) {
   mat-sidenav.collapsed .mat-nav-list .mat-list-item mat-icon[matListIcon],
   mat-sidenav.collapsed .mat-nav-list a.mat-list-item mat-icon[matListIcon] {
@@ -186,4 +307,28 @@ news-card {
     height: 36px;
     line-height: 36px;
   }
+}
+
+/* final alignment enforcement - place at end to override others */
+.mat-nav-list .mat-list-item,
+.mat-nav-list a.mat-list-item {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.mat-list-item mat-icon[matListIcon] {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.mat-list-item .mat-line {
+  display: flex !important;
+  align-items: center !important;
+  height: 100% !important;
+}
+
+.mobileFab {
+  background: #a12015 !important; /* button background */
+  color: white !important; /* icon color */
 }
