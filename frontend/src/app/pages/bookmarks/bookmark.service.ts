@@ -2,9 +2,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Bookmark } from './bookmark.model';
 
 export interface BookmarkRequest {
-    //userId: string;
     title: string;
     url: string;
     source: string;
@@ -26,7 +26,7 @@ export class BookmarkService {
         // backend returns no body -> use void and no responseType
         return this.http.post<void>(`${this.base}/save`, payload, { headers });
     }
-    // bookmark.service.ts
+
 
     deleteBookmark(title: string) {
         const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -36,6 +36,14 @@ export class BookmarkService {
     }
 
 
+    getBookmarks(): Observable<Bookmark[]> {
+        const token = localStorage.getItem('jwtToken');
+        let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+        if (token) {
+            headers = headers.set('Authorization', `Bearer ${token}`);
+        }
 
 
+        return this.http.get<Bookmark[]>(`${this.base}/getAll`, { headers });
+    }
 }

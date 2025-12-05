@@ -1,1 +1,7 @@
-<p>bookmarks works!</p>
+<bookmark-card
+  *ngFor="let b of bookmarks$ | async"
+  [title]="b.title"
+  [url]="b.url"
+  [source]="b.source"
+  [saved]="true"
+></bookmark-card>

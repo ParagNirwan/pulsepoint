@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { NewsArticle } from '../../services/news.service';
-import { BookmarkService, BookmarkRequest } from './bookmark.service';
+import { BookmarkService, BookmarkRequest } from '../../pages/bookmarks/bookmark.service';
 import { HttpClientModule } from '@angular/common/http';
 
 @Component({
@@ -70,7 +70,7 @@ export class NewsCardComponent {
       return;
     }
 
-    // saving flow remains the same
+    // saving flow
     if (!this.article) {
       this.snackBar.open('No article to save', '', { duration: 2000 });
       this.saved = false;
