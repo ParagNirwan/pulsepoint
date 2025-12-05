@@ -6,6 +6,7 @@
       <hr />
       {{ article.source.name }} |
       {{ article.publishedAt | date : 'mediumDate' }}
+
       <hr
     /></mat-card-subtitle>
   </mat-card-header>
@@ -38,7 +39,7 @@
       <span class="material-icons">share</span>
     </button>
 
-    <button mat-button (click)="saved = !saved">
+    <button mat-button (click)="toggleSave()">
       <span class="material-icons">
         {{ saved ? 'bookmark' : 'bookmark_border' }}
       </span>
