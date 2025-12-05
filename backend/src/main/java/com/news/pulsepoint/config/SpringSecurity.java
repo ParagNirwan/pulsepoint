@@ -38,6 +38,8 @@ public class SpringSecurity {
                         .requestMatchers("/public/**").permitAll()
                         .requestMatchers("/user/**").authenticated()
                         .requestMatchers("/api/auth/**").permitAll()
+                        //.requestMatchers("/bookmark/remove").permitAll()
+                        .requestMatchers("/bookmark/**").authenticated()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
