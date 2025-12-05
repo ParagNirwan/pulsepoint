@@ -8,13 +8,13 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { NewsArticle } from '../../services/news.service';
 import { BookmarkService, BookmarkRequest } from '../../pages/bookmarks/bookmark.service';
 import { HttpClientModule } from '@angular/common/http';
-
+import { removeBookmark, saveBookmark } from '../../shared/bookmark.helper';
 @Component({
   selector: 'news-card',
   standalone: true,
   imports: [
     CommonModule,
-    HttpClientModule, // ensure HttpClient is available for the injected service
+    HttpClientModule,
     MatCardModule,
     MatButtonModule,
     MatIconModule,
@@ -49,22 +49,16 @@ export class NewsCardComponent {
     this.saved = !this.saved;
 
     if (!this.saved) {
+      // user is un-saving the article
       if (!this.article || !this.article.title) {
         this.snackBar.open('No article to remove', '', { duration: 2000 });
         return;
       }
 
-      const titleToRemove = this.article.title; // capture so TS knows it is defined
+      const titleToRemove = this.article.title;
 
-      this.bookmarkService.deleteBookmark(titleToRemove).subscribe({
-        next: () => {
-          this.snackBar.open('Removed from Bookmarks', '', { duration: 2000 });
-          console.log('bookmark removed', titleToRemove);
-        },
-        error: err => {
-          console.error('bookmark delete error', err);
-          this.snackBar.open('Failed to remove bookmark', '', { duration: 2000 });
-        }
+      removeBookmark(titleToRemove, this.bookmarkService, this.snackBar, () => {
+        this.saved = true;
       });
 
       return;
@@ -88,26 +82,18 @@ export class NewsCardComponent {
       source: sourceValue
     };
 
-    this.bookmarkService.saveBookmark(payload).subscribe({
-      next: res => {
-        this.snackBar.open('Bookmarked', '', { duration: 2000 });
-
+    saveBookmark(
+      payload,
+      this.bookmarkService,
+      this.snackBar,
+      () => {
+        // on conflict, keep saved true
+        this.saved = true;
       },
-      error: err => {
-
-
-        if (err.status === 409) {
-          this.snackBar.open('Article already bookmarked', '', { duration: 2000 });
-          this.saved = true;
-          return;
-        }
-
-        console.error('bookmark save error', err);
-        this.snackBar.open('Failed to bookmark', '', { duration: 2000 });
+      () => {
+        // on error, revert saved flag
         this.saved = false;
       }
-    });
+    );
   }
-
-
 }
