@@ -3,6 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { BookmarkService } from '../../pages/bookmarks/bookmark.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { removeBookmark, saveBookmark } from '../../shared/bookmark.helper';
 
 @Component({
   selector: 'bookmark-card',
@@ -30,16 +31,24 @@ export class BookmarksCard {
     this.saved = !this.saved;
     const title = this.title;
 
-    this.bookmarkService.deleteBookmark(title).subscribe({
-      next: () => {
-        this.snackBar.open(`Removed bookmark: ${title}`, '', { duration: 2000 });
-      },
-      error: (err: any) => {
-        console.error('Error removing bookmark', err);
-        this.snackBar.open(`Failed to remove bookmark: ${title}`, '', { duration: 2000 });
-        this.saved = true; // revert state on error
-      }
-    });
-
+    if (this.saved) {
+      // user just toggled to saved, so save it
+      saveBookmark(
+        {
+          title: this.title,
+          url: this.url,
+          source: this.source ?? 'unknown' // ensure a string per BookmarkRequest
+        },
+        this.bookmarkService,
+        this.snackBar,
+        () => { /* on conflict: keep saved true */ },
+        () => { this.saved = false; } // revert on error
+      );
+    } else {
+      // user just toggled to not saved, so remove it
+      removeBookmark(title, this.bookmarkService, this.snackBar, () => {
+        this.saved = true; // revert on error
+      });
+    }
   }
 }
