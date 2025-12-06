@@ -51,7 +51,7 @@ export class SidenavComponent implements AfterViewInit {
   menuItems: MenuItem[] = [
     { label: 'News Feed', icon: 'article', route: 'feed' },
     { label: 'Bookmarks', icon: 'bookmark', route: 'bookmarks' },
-    { label: 'Liked News', icon: 'thumb_up', route: 'liked-news' },
+    /*{ label: 'Liked News', icon: 'thumb_up', route: 'liked-news' },*/
     { label: 'Settings', icon: 'settings', route: 'user-settings' },
     { label: 'Log Out', icon: 'power_settings_new', action: () => this.logout() }
   ];

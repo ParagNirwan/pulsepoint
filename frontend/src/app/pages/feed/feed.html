@@ -1,4 +1,8 @@
 <div class="feed-header">
+  <!-- <button mat-icon-button class="refreshButton" (click)="refresh()" matTooltip="Refresh feed">
+    <mat-icon>refresh</mat-icon>
+  </button>-->
+
   <ng-container *ngIf="articles$ | async as articles; else loading">
     <div class="feedBody" *ngIf="articles.length > 0; else empty">
       <news-card *ngFor="let a of articles" [article]="a"></news-card>

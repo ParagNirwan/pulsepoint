@@ -18,7 +18,7 @@ export class Bookmarks {
 
   constructor(private bookmarkService: BookmarkService) {
     // create the shared observable
-    this.bookmarks$ = this.bookmarkService.getBookmarks().pipe(
+    this.bookmarks$ = this.bookmarkService.getBookmarksList().pipe(
       tap(data => console.log('Bookmarks loaded', data)),
       shareReplay(1)
     );

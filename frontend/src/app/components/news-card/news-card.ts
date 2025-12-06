@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -8,7 +8,8 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { NewsArticle } from '../../services/news.service';
 import { BookmarkService, BookmarkRequest } from '../../pages/bookmarks/bookmark.service';
 import { HttpClientModule } from '@angular/common/http';
-import { removeBookmark, saveBookmark } from '../../shared/bookmark.helper';
+import { Subscription } from 'rxjs';
+
 @Component({
   selector: 'news-card',
   standalone: true,
@@ -24,16 +25,41 @@ import { removeBookmark, saveBookmark } from '../../shared/bookmark.helper';
   templateUrl: './news-card.html',
   styleUrls: ['./news-card.css']
 })
-export class NewsCardComponent {
+export class NewsCardComponent implements OnInit, OnDestroy, OnChanges {
   @Input() article: NewsArticle | null = null;
 
   liked = false;
   saved = false;
 
+  private bookmarkSub: Subscription | null = null;
+
   constructor(
     private bookmarkService: BookmarkService,
     private snackBar: MatSnackBar
   ) { }
+
+  ngOnInit() {
+    // nothing here, subscription happens on input changes
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['article']) {
+      this.bookmarkSub?.unsubscribe();
+      const title = this.article?.title;
+      if (title) {
+        this.bookmarkSub = this.bookmarkService.isBookmarked(title).subscribe({
+          next: v => this.saved = v,
+          error: () => this.saved = false
+        });
+      } else {
+        this.saved = false;
+      }
+    }
+  }
+
+  ngOnDestroy() {
+    this.bookmarkSub?.unsubscribe();
+  }
 
   openArticle() {
     if (this.article && this.article.url) {
@@ -42,58 +68,50 @@ export class NewsCardComponent {
   }
 
   dislike() {
-    // your existing logic
+    // keep your existing logic
   }
 
   toggleSave() {
-    this.saved = !this.saved;
+    const title = this.article?.title;
+    if (!title) {
+      this.snackBar.open('No article selected', '', { duration: 2000 });
+      return;
+    }
 
-    if (!this.saved) {
-      // user is un-saving the article
-      if (!this.article || !this.article.title) {
-        this.snackBar.open('No article to remove', '', { duration: 2000 });
-        return;
-      }
-
-      const titleToRemove = this.article.title;
-
-      removeBookmark(titleToRemove, this.bookmarkService, this.snackBar, () => {
-        this.saved = true;
+    if (this.saved) {
+      // remove bookmark
+      this.bookmarkService.deleteBookmark(title).subscribe({
+        next: () => {
+          this.snackBar.open('Bookmark removed', '', { duration: 1500 });
+          // bookmarkService updates cache and saved will update via subscription
+        },
+        error: () => {
+          this.snackBar.open('Failed to remove bookmark', '', { duration: 2000 });
+        }
       });
-
       return;
     }
 
-    // saving flow
-    if (!this.article) {
-      this.snackBar.open('No article to save', '', { duration: 2000 });
-      this.saved = false;
-      return;
-    }
-
+    // save bookmark
+    const src = this.article?.source;
     let sourceValue = 'unknown';
-    const src = this.article.source;
     if (typeof src === 'string') sourceValue = src;
     else if (src && typeof src === 'object') sourceValue = src.name ?? 'unknown';
 
     const payload: BookmarkRequest = {
-      title: this.article.title || 'Untitled',
-      url: this.article.url || '',
+      title: title || 'Untitled',
+      url: this.article?.url || '',
       source: sourceValue
     };
 
-    saveBookmark(
-      payload,
-      this.bookmarkService,
-      this.snackBar,
-      () => {
-        // on conflict, keep saved true
-        this.saved = true;
+    this.bookmarkService.saveBookmark(payload).subscribe({
+      next: () => {
+        this.snackBar.open('Saved to bookmarks', '', { duration: 1500 });
+        // bookmarkService updates cache and saved will update via subscription
       },
-      () => {
-        // on error, revert saved flag
-        this.saved = false;
+      error: () => {
+        this.snackBar.open('Failed to save bookmark', '', { duration: 2000 });
       }
-    );
+    });
   }
 }
