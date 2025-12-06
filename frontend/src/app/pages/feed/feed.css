@@ -187,3 +187,7 @@ news-card {
     line-height: 36px;
   }
 }
+
+.feed-header {
+  position: relative;
+}

@@ -47,4 +47,7 @@ export class Feed implements OnInit {
   async ngOnInit() {
     this.username = await this.authService.getUsername();
   }
+  refresh() {
+    this.articles$ = this.newsService.refreshTopHeadlines('us', 10);
+  }
 }
