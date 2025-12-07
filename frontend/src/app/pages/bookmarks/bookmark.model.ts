@@ -1,6 +1,11 @@
+export interface BookmarkId {
+    timestamp: number;
+    date: string;
+}
+
 export interface Bookmark {
-    _id: string;
-    userId: string;
+    id: BookmarkId;
+    userId: BookmarkId;
     title: string;
     url: string;
     source?: string;
