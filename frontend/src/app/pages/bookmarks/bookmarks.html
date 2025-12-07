@@ -1,5 +1,15 @@
+<div class="sort-container">
+  <mat-form-field>
+    <mat-label>Sort by</mat-label>
+    <mat-select (selectionChange)="onSortChange($event.value)">
+      <mat-option value="dateAsc">Date Saved Asc</mat-option>
+      <mat-option value="dateDesc">Date Saved Desc</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
 <bookmark-card
-  *ngFor="let b of bookmarks$ | async"
+  *ngFor="let b of sortedBookmarks$ | async"
   [title]="b.title"
   [url]="b.url"
   [source]="b.source"

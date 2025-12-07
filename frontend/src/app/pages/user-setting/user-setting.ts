@@ -44,12 +44,12 @@ export class UserSettingsComponent {
 
       this.authService.deleteAccount().subscribe({
         next: () => {
-          console.log('Account deleted!');
+
           alert('Your account has been deleted.');
           this.authService.logout(); // clears JWT + reloads
         },
         error: (err: HttpErrorResponse) => {
-          console.error(err);
+
           alert('Failed to delete account. Please try again.');
         }
       });
