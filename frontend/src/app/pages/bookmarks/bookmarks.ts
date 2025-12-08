@@ -50,14 +50,14 @@ export class Bookmarks {
         // safety: if bookmarks is null or undefined, use empty array
         const list = bookmarks ?? [];
 
-        console.log('Raw bookmarks for sorting', list);
+
 
         const copy = [...list];
 
         copy.sort((a, b) => {
           // guard against missing id or date
           if (!a?.id || !b?.id) {
-            console.warn('Bookmark without id field', a, b);
+
           }
 
           const aTime = a?.id?.date
@@ -73,7 +73,7 @@ export class Bookmarks {
             : bTime - aTime;
         });
 
-        console.log('Sorted direction', direction, copy);
+
 
         return copy;
       })

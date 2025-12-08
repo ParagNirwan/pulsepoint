@@ -40,7 +40,7 @@ export class UserSettingsComponent {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, { data });
 
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
-      if (!confirmed) return console.log('Delete cancelled');
+      if (!confirmed) return //console.log('Delete cancelled');
 
       this.authService.deleteAccount().subscribe({
         next: () => {

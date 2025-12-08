@@ -13,11 +13,11 @@ export function removeBookmark(
 ): void {
     bookmarkService.deleteBookmark(title).subscribe({
         next: () => {
-            snackBar.open(`Removed bookmark: ${title}`, '', { duration: 2000 });
+            snackBar.open(`Removed bookmark`, '', { duration: 2000 });
         },
         error: (err: any) => {
             console.error('Error removing bookmark', err);
-            snackBar.open(`Failed to remove bookmark: ${title}`, '', { duration: 2000 });
+            snackBar.open(`Failed to remove bookmark`, '', { duration: 2000 });
             if (onErrorRevert) onErrorRevert();
         }
     });
