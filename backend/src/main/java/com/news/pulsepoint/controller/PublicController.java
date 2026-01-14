@@ -25,7 +25,7 @@ public class PublicController {
         try {
             userService.saveUser(user);
             return ResponseEntity.status(HttpStatus.CREATED).body("Successfully saved");
-        } catch (RuntimeException _) {
+        } catch (RuntimeException e) {
            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 

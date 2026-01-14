@@ -82,6 +82,14 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!--Stripe Payments-->
+        <dependency>
+            <groupId>com.stripe</groupId>
+            <artifactId>stripe-java</artifactId>
+            <version>24.12.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -100,11 +108,7 @@
                 <configuration>
                     <source>21</source>
                     <target>21</target>
-                    <!-- Uncomment if you want to enable preview features in future -->
 
-                    <compilerArgs>
-                        <arg>--enable-preview</arg>
-                    </compilerArgs>
 
                 </configuration>
             </plugin>
