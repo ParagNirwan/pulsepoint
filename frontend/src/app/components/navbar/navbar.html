@@ -7,7 +7,14 @@
 
   <div class="nav-links">
     <ng-container *ngIf="username$ | async as username; else loggedOut">
-      
+
+      <span *ngIf="plantype$ | async as plan" class="plan-badge" [ngClass]="{
+      'free': plan === 'FREE',
+      'premium': plan !== 'FREE'
+    }">
+        {{ plan }}
+      </span>
+
       <!--<a mat-button routerLink="/feed">Home</a>-->
       <!--<a mat-button routerLink="/user-settings">Settings</a>-->
       <!--<a mat-button (click)="logout()">Log Out</a>-->

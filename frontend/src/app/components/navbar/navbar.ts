@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { Observable } from 'rxjs';
-import { AuthService } from '../../auth/auth.service';
+import { AuthService, PlanType } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -16,9 +16,11 @@ import { AuthService } from '../../auth/auth.service';
 })
 export class Navbar {
   username$: Observable<string | null>;
+  plantype$: Observable<PlanType>;
 
   constructor(private authService: AuthService) {
     this.username$ = this.authService.username$;
+    this.plantype$ = this.authService.planType$;
   }
 
   logout() {

@@ -49,7 +49,7 @@ export class Login {
     this.authService.login(email, password).subscribe({
       next: (res: any) => {
         // save token in AuthService (or localStorage inside AuthService)
-        this.authService.setToken(res.token);
+        //this.authService.setToken(res.token);
         // redirect after successful login
         this.router.navigate(['/feed']); // replace with your route
       },
