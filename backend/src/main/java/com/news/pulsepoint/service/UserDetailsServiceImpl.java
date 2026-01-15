@@ -2,6 +2,7 @@ package com.news.pulsepoint.service;
 
 import com.news.pulsepoint.entity.User;
 import com.news.pulsepoint.repository.UserRepository;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -34,4 +35,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .authorities(new ArrayList<>()) // empty list if you don't use roles yet
                 .build();
     }
+
+    public ObjectId getUserIdByEmail(String email) {
+        return userRepository.findByUsername(email)
+                .orElseThrow()
+                .getId();
+    }
+
 }

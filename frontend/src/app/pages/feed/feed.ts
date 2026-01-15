@@ -1,5 +1,4 @@
-// src/app/pages/feed/feed.ts
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../auth/auth.service';
 import { NewsService, NewsArticle } from '../../services/news.service';
@@ -18,7 +17,9 @@ import { NewsCardComponent } from '../../components/news-card/news-card';
 @Component({
   selector: 'app-feed',
   standalone: true,
-  imports: [CommonModule, RouterModule,
+  imports: [
+    CommonModule,
+    RouterModule,
     MatSidenavModule,
     MatListModule,
     MatProgressSpinnerModule,
@@ -26,28 +27,32 @@ import { NewsCardComponent } from '../../components/news-card/news-card';
     MatButtonModule,
     MatToolbarModule,
     MatTooltipModule,
-    NewsCardComponent],
+    NewsCardComponent
+  ],
   templateUrl: './feed.html',
   styleUrls: ['./feed.css']
 })
-export class Feed implements OnInit {
-  username: string | null = null;
+export class Feed {
 
+  username$!: Observable<string | null>;
   articles$: Observable<NewsArticle[]>;
 
-  constructor(private newsService: NewsService,
+  constructor(
+    private newsService: NewsService,
     private breakpoint: BreakpointObserver,
-    private authService: AuthService) {
+    private authService: AuthService
+  ) {
+    // ✅ safe: authService is now initialized
+    this.username$ = this.authService.username$;
+
     this.articles$ = this.newsService.fetchTopHeadlines('us', 10).pipe(
       catchError(() => of([])),
       shareReplay({ bufferSize: 1, refCount: true })
     );
   }
 
-  async ngOnInit() {
-    this.username = await this.authService.getUsername();
-  }
   refresh() {
     this.articles$ = this.newsService.refreshTopHeadlines('us', 10);
   }
 }
+
