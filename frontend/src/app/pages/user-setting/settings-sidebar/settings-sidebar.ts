@@ -15,6 +15,7 @@ export class SettingsSidebarComponent {
     { id: 'news', label: 'News Preferences' },
     { id: 'account', label: 'Account Settings' },
     { id: 'privacy', label: 'Privacy Settings' },
+    {id:'subscription',label:'Subscription' }
   ];
 
   @Output() categorySelected = new EventEmitter<string>();

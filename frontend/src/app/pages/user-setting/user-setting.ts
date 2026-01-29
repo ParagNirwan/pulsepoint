@@ -4,8 +4,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { SettingsSidebarComponent } from './settings-sidebar/settings-sidebar';
 import { ConfirmDialogComponent, ConfirmDialogData } from '../../components/confirm-dialog/confirm-dialog';
-import { AuthService } from '../../auth/auth.service';
+import { AuthService, PlanType } from '../../auth/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-user-settings',
@@ -20,9 +21,21 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrls: ['./user-setting.css']
 })
 export class UserSettingsComponent {
+subscribe() {
+throw new Error('Method not implemented.');
+}
+cancelSubscription() {
+throw new Error('Method not implemented.');
+}
   selectedCategory = 'news';
+  username$: Observable<string | null>;
+  plantype$: Observable<PlanType>;
 
-  constructor(private dialog: MatDialog, private authService: AuthService) { }
+
+  constructor(private dialog: MatDialog, private authService: AuthService) {
+     this.username$ = this.authService.username$;
+    this.plantype$ = this.authService.planType$;
+   }
 
   onCategoryChange(category: string) {
     this.selectedCategory = category;

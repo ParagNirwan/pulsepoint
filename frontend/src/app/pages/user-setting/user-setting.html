@@ -19,6 +19,32 @@
         <p>Here go your Privacy settings...</p>
       </div>
 
+     <!-- subscriptions section -->
+<div *ngSwitchCase="'subscriptions'">
+  <ng-container *ngIf="plantype$ | async as planType">
+    <!-- NOT SUBSCRIBED -->
+    <button
+      *ngIf="planType === 'FREE'"
+      mat-flat-button
+      color="primary"
+      (click)="subscribe()"
+    >
+      Subscribe
+    </button>
+
+    <!-- SUBSCRIBED -->
+    <button
+      *ngIf="planType !== 'FREE'"
+      mat-flat-button
+      color="warn"
+      (click)="cancelSubscription()"
+    >
+      Cancel Subscription
+    </button>
+  </ng-container>
+</div>
+
+
       <div *ngSwitchDefault>
         <p>Select a category from the sidebar.</p>
       </div>
