@@ -33,9 +33,6 @@ export class AuthService {
 
     constructor(private http: HttpClient, private router: Router) {}
 
-    /* =========================
-       Auth
-       ========================= */
 
     login(email: string, password: string): Observable<AuthResponse> {
         return this.http
