@@ -7,6 +7,7 @@ import { ConfirmDialogComponent, ConfirmDialogData } from '../../components/conf
 import { AuthService, PlanType } from '../../auth/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { StripeService } from '../../services/stripe.service';
 
 @Component({
   selector: 'app-user-settings',
@@ -21,21 +22,37 @@ import { Observable } from 'rxjs';
   styleUrls: ['./user-setting.css']
 })
 export class UserSettingsComponent {
-subscribe() {
-throw new Error('Method not implemented.');
-}
-cancelSubscription() {
-throw new Error('Method not implemented.');
-}
+
+  //In a real app I would fetch price ID from backend. 
+  // Hardcoding for demo purposes as I only have one product,
+  // I did not wanted to create an entire endpoint and table for it. 
+
+  subscribe() {
+    console.log('Subscribing user to premium plan');
+    const PRICE_ID = 'price_1SpPG5A6cwPZWI34Dw6VwG3V'; // your Stripe priceId
+    this.stripeService.subscribe(PRICE_ID);
+  }
+
+
+  cancelSubscription() {
+    throw new Error('Method not implemented.');
+  }
+
+
   selectedCategory = 'news';
   username$: Observable<string | null>;
   plantype$: Observable<PlanType>;
 
 
-  constructor(private dialog: MatDialog, private authService: AuthService) {
-     this.username$ = this.authService.username$;
+  constructor(
+    private dialog: MatDialog,
+    private authService: AuthService,
+    private stripeService: StripeService
+  ) {
+    this.username$ = this.authService.username$;
     this.plantype$ = this.authService.planType$;
-   }
+  }
+
 
   onCategoryChange(category: string) {
     this.selectedCategory = category;
