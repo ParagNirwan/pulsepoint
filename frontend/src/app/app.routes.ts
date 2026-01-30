@@ -7,12 +7,19 @@ import { AuthGuard } from './auth/auth.guard';
 import { Bookmarks } from './pages/bookmarks/bookmarks';
 import { LikedNews } from './pages/liked-news/liked-news';
 import { SidenavComponent } from './components/sidenav/sidenav';
+import { SubscriptionSuccess } from './pages/subscription-success/subscription-success';
+import { SubscriptionCancel } from './pages/subscription-cancel/subscription-cancel';
+
 
 export const routes: Routes = [
     { path: 'signup', component: Signup },
     { path: 'login', component: Login },
 
-    // Sidenav is layout container for authenticated pages
+    // Stripe redirect routes (NO GUARD)
+    { path: 'subscription-success', component: SubscriptionSuccess},
+    { path: 'subscription-cancel', component: SubscriptionCancel },
+
+    // Authenticated layout
     {
         path: '',
         component: SidenavComponent,
@@ -26,6 +33,5 @@ export const routes: Routes = [
         ]
     },
 
-    // fallback
     { path: '**', redirectTo: '' }
 ];

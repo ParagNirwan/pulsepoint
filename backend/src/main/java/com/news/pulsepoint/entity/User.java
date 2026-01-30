@@ -24,4 +24,9 @@ public class User {
 
     private List<String> roles;
     private String email;
+    // Stripe
+    private String stripeCustomerId;
+    private String stripeSubscriptionId;
+    private String subscriptionStatus; // ACTIVE, INCOMPLETE, CANCELED
+
 }

@@ -33,17 +33,28 @@ public class SpringSecurity {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.cors().and() // enable CORS
+        return http
+                .cors().and()
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
+
+                        // 🔥 ALLOW PREFLIGHT REQUESTS
+                        .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
+
+                        // public endpoints
                         .requestMatchers("/public/**").permitAll()
-                        .requestMatchers("/user/**").authenticated()
                         .requestMatchers("/api/auth/**").permitAll()
-                        //.requestMatchers("/bookmark/remove").permitAll()
+                        .requestMatchers("/api/stripe/webhook").permitAll()
+
+                        // authenticated endpoints
+                        .requestMatchers("/user/**").authenticated()
                         .requestMatchers("/bookmark/**").authenticated()
-                        .anyRequest().authenticated())
+
+                        // everything else
+                        .anyRequest().authenticated()
+                )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .csrf(AbstractHttpConfigurer::disable)
                 .build();
     }
 
