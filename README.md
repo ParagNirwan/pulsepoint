@@ -73,8 +73,7 @@ Clean, readable news feed focused on content.
 ### 🔐 Login / Signup
 Secure authentication with a simple UI.
 
-> Place screenshots inside a `/screenshots` folder and reference them like:
-> ![Homepage](screenshots/homepage.png)
+
 
 ---
 
