@@ -1,0 +1,65 @@
+<mat-card style="max-width: 720px; margin: 24px auto; padding: 8px;">
+  <mat-card-header>
+    <mat-card-title>User Preferences</mat-card-title>
+    <mat-card-subtitle>
+      Choose your default country, languages, and categories for your news feed.
+    </mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form [formGroup]="form" style="display: flex; flex-direction: column; gap: 18px; margin-top: 16px;">
+
+      <!-- Country -->
+      <mat-form-field appearance="outline">
+        <mat-label>Country</mat-label>
+        <mat-select formControlName="country">
+          @for (c of countries; track c.code) {
+            <mat-option [value]="c.code">{{ c.name }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Languages -->
+      <mat-form-field appearance="outline">
+        <mat-label>Languages (multiple)</mat-label>
+        <mat-select formControlName="languages" multiple>
+          @for (l of languages; track l.code) {
+            <mat-option [value]="l.code">{{ l.name }}</mat-option>
+          }
+        </mat-select>
+        <mat-hint>Pick one or more languages.</mat-hint>
+      </mat-form-field>
+
+      <!-- Categories -->
+      <mat-form-field appearance="outline">
+        <mat-label>News Categories (multiple)</mat-label>
+        <mat-select formControlName="categories" multiple>
+          @for (cat of categories; track cat.code) {
+            <mat-option [value]="cat.code">{{ cat.name }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Buttons -->
+      <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 6px;">
+        <button mat-stroked-button type="button" (click)="resetToDefaults()" [disabled]="isSaving">
+          Reset
+        </button>
+
+        <button mat-flat-button color="primary" type="button" (click)="savePreferences()" [disabled]="isSaving">
+          @if (!isSaving) {
+            Save Preferences
+          } @else {
+            <mat-progress-spinner
+              diameter="18"
+              mode="indeterminate"
+              style="display: inline-block; vertical-align: middle; margin-right: 8px;">
+            </mat-progress-spinner>
+            Saving...
+          }
+        </button>
+      </div>
+
+    </form>
+  </mat-card-content>
+</mat-card>

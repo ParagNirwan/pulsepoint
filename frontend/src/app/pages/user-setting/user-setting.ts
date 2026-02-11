@@ -8,6 +8,7 @@ import { AuthService, PlanType } from '../../auth/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { StripeService } from '../../services/stripe.service';
+import { UserPreferencesPageComponent } from '../../components/user-preferences/user-preferences';
 
 @Component({
   selector: 'app-user-settings',
@@ -16,7 +17,8 @@ import { StripeService } from '../../services/stripe.service';
     CommonModule,
     SettingsSidebarComponent,
     MatButtonModule,
-    MatDialogModule
+    MatDialogModule,
+    UserPreferencesPageComponent,
   ],
   templateUrl: './user-setting.html',
   styleUrls: ['./user-setting.css']
