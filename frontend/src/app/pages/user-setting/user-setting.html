@@ -7,7 +7,7 @@
     <h2>{{ selectedCategory | titlecase }}</h2>
     <ng-container [ngSwitch]="selectedCategory">
       <div *ngSwitchCase="'news'">
-        <p>Here go your News Preference settings...</p>
+       <app-user-preferences-page></app-user-preferences-page>
       </div>
 
       <div *ngSwitchCase="'account'">
